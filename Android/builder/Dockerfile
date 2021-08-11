@@ -45,15 +45,10 @@ RUN mkdir -p $ANDROID_SDK_ROOT \
   && mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/tools \
   && mv $ANDROID_SDK_ROOT/cmdline-tools/bin $ANDROID_SDK_ROOT/cmdline-tools/tools \
   && mv $ANDROID_SDK_ROOT/cmdline-tools/lib $ANDROID_SDK_ROOT/cmdline-tools/tools \
-  && echo 1 \
   && yes "y" | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" \
-  && echo 2 \
   && yes "y" | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS2_VERSION" \
-  && echo 3 \
   && yes "y" | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS3_VERSION" \
-  && echo 4 \
   && yes "y" | sdkmanager "platforms;android-$ANDROID_VERSION" \
-  && echo 5 \
   && yes "y" | sdkmanager "platform-tools"
 # flutter
 RUN curl -o flutter.tar.xz $FLUTTER_URL \
