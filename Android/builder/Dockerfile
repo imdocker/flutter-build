@@ -3,16 +3,14 @@ FROM ubuntu:20.04
 ENV UID=1000
 ENV GID=1000
 ENV USER="developer"
-ENV JAVA_VERSION="8"
-ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip"
-ENV ANDROID_VERSION="29"
-ENV ANDROID_BUILD_TOOLS_VERSION="30.0.3"
-ENV ANDROID_BUILD_TOOLS2_VERSION="29.0.3"
-ENV ANDROID_BUILD_TOOLS3_VERSION="29.0.2"
+ENV JAVA_VERSION="11"
+ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip"
+ENV ANDROID_VERSION="31"
+ENV ANDROID_BUILD_TOOLS_VERSION="31.0.0"
 ENV ANDROID_ARCHITECTURE="x86_64"
 ENV ANDROID_SDK_ROOT="/home/$USER/android"
 ENV FLUTTER_CHANNEL="stable"
-ENV FLUTTER_VERSION="2.5.3"
+ENV FLUTTER_VERSION="2.10.1"
 ENV FLUTTER_URL="https://storage.googleapis.com/flutter_infra_release/releases/$FLUTTER_CHANNEL/linux/flutter_linux_$FLUTTER_VERSION-$FLUTTER_CHANNEL.tar.xz"
 ENV FLUTTER_HOME="/home/$USER/flutter"
 ENV FLUTTER_WEB_PORT="8090"
@@ -48,15 +46,11 @@ RUN mkdir -p $ANDROID_SDK_ROOT \
   && echo 1 \
   && yes "y" | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" \
   && echo 2 \
-  && yes "y" | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS2_VERSION" \
-  && echo 3 \
-  && yes "y" | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS3_VERSION" \
-  && echo 4 \
   && yes "y" | sdkmanager "platforms;android-$ANDROID_VERSION" \
-  && echo 5 \
+  && echo 3 \
   && yes "y" | sdkmanager "platform-tools" \
-  && echo 6 \
-  && yes "y" | sdkmanager "cmdline-tools;4.0"
+  && echo 4 \
+  && yes "y" | sdkmanager "cmdline-tools;4.0" && echo show installed && sdkmanager --list
 # flutter
 
 RUN echo $FLUTTER_URL && curl -o flutter.tar.xz $FLUTTER_URL \
@@ -65,7 +59,7 @@ RUN echo $FLUTTER_URL && curl -o flutter.tar.xz $FLUTTER_URL \
   && rm flutter.tar.xz \
   && echo config && flutter config --no-analytics \
   && echo precache && flutter precache \
-  && echo android &&  yes "y" | echo flutter doctor --android-licenses \
+  && echo accept android licenses &&  yes "y" | flutter doctor --android-licenses \
   && flutter doctor \
   && echo flutter emulators --create \
   && flutter update-packages
